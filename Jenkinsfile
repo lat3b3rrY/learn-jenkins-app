@@ -18,7 +18,7 @@ pipeline {
                     ls -la
                 '''
             }
-        }
+        },
         stage('Test') {
             sh '''
                 test -f index.html
