@@ -4,13 +4,12 @@ pipeline {
         stage('Build') {
             agent {
                 docker {
-                    image 'node:20-alpine'
+                    image 'node:18-alpine'
                     reuseNode true
                 }
             }
             steps {
                 sh '''
-                    unset DOCKER_HOST
                     ls -la
                     node --version
                     npm --version
@@ -23,13 +22,12 @@ pipeline {
         stage('Test') {
             agent {
                 docker {
-                    image 'node:20-alpine'
+                    image 'node:18-alpine'
                     reuseNode true
                 }
             }
             steps {
                 sh '''
-                    unset DOCKER_HOST
                     echo "Test stage"
                     test -f build/index.html
                     npm test
@@ -51,6 +49,7 @@ pipeline {
                         '''
                     }
                 }
+        }
     }
     post {
         always {
