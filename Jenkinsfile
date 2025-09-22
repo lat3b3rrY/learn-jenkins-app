@@ -10,6 +10,7 @@ pipeline {
             }
             steps {
                 sh '''
+                    unset DOCKER_HOST
                     ls -la
                     node --version
                     npm --version
@@ -28,6 +29,7 @@ pipeline {
             }
             steps {
                 sh '''
+                    unset DOCKER_HOST
                     echo "Test stage"
                     test -f build/index.html
                     npm test
@@ -43,6 +45,7 @@ pipeline {
             }
             steps {
                 sh '''
+                    unset DOCKER_HOST
                     npm install -g serve
                     serve -s build
                     npx playwright test
