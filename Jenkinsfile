@@ -1,7 +1,7 @@
 pipeline {
     agent any
     stages {
-        stage('Deploy') {
+        stage('Build') {
             agent {
                 docker {
                     image 'node:20-alpine'
@@ -10,8 +10,12 @@ pipeline {
             }
             steps {
                 sh '''
-                    npm install netlify-cli
-                    node_modules/.bin/netlify --version
+                    ls -la
+                    node --version
+                    npm --version
+                    npm ci
+                    npm run build
+                    ls -la
                 '''
             }
         }
@@ -57,6 +61,20 @@ pipeline {
                             publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: '', useWrapperFileDirectly: true])
                         }
                     }
+                }
+            }
+            stage('Deploy') {
+                agent {
+                    docker {
+                        image 'node:20-alpine'
+                        reuseNode true
+                        }
+                    }
+                steps {
+                    sh '''
+                        npm install netlify-cli
+                        node_modules/.bin/netlify --version
+                    '''
                 }
             }
         }
