@@ -115,7 +115,7 @@ pipeline {
         stage('Deploy Prod') {
             agent {
                 docker {
-                    image 'node:20-alpine'
+                    image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
                     reuseNode true
                 }
             }
@@ -127,23 +127,8 @@ pipeline {
                     node_modules/.bin/netlify link --id $NETLIFY_PROJECT_ID
                     node_modules/.bin/netlify status
                     node_modules/.bin/netlify deploy --dir=build --prod
-               '''
-            }
-        }
-        stage('Prod E2E') {
-            agent {
-                docker {
-                    image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
-                    reuseNode true
-                }
-            }
-            environment {
-                CI_ENVIRONMENT_URL = 'https://phenomenal-otter-742128.netlify.app'
-            }
-            steps {
-                sh '''
                     npx playwright test --reporter=html
-                '''
+               '''
             }
             post {
                 always {
