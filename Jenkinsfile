@@ -84,6 +84,7 @@ pipeline {
                     echo "Deploying to production. Project ID: $NETLIFY_PROJECT_ID"
                     node_modules/.bin/netlify link --id $NETLIFY_PROJECT_ID
                     node_modules/.bin/netlify status
+                    node_modules/.bin/netlify deploy --dir=build --prod
                 '''
             }
         }
