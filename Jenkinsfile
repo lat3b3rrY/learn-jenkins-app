@@ -37,7 +37,6 @@ pipeline {
                     }
                     steps {
                         sh '''
-                            echo "Test stage"
                             test -f build/index.html
                             npm test
                         '''
@@ -79,7 +78,7 @@ pipeline {
                 }
             }
             environment {
-                CI_ENVIRONMENT_URL = "${env.STAGING_URL}"
+                CI_ENVIRONMENT_URL = 'STAGING_URL_TO_BE_SET'
             }
             steps {
                 sh '''
@@ -106,8 +105,12 @@ pipeline {
                     reuseNode true
                 }
             }
+            environment {
+                CI_ENVIRONMENT_URL = 'https://phenomenal-otter-742128.netlify.app'
+            }
             steps {
                 sh '''
+                    node --version
                     npm install netlify-cli@20.1.1
                     node_modules/.bin/netlify --version
                     echo "Deploying to production. Project ID: $NETLIFY_PROJECT_ID"
